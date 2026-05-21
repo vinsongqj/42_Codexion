@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread -Iinclude
 SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = include
-SRCS_FILES = main.c actions.c scheduler.c threads.c utils.c
+SRCS_FILES = main.c actions.c scheduler.c threads.c utils.c utils_2.c init.c
 SRCS = $(addprefix $(SRC_DIR)/, $(SRCS_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS_FILES:.c=.o))
 HEADER = $(INC_DIR)/codexion.h 
@@ -25,7 +25,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
 
 debug:
 	$(CC) $(CFLAGS) -fsanitize=thread -g -Iinc src/*.c -lpthread -o codexion_debug
-	./codexion_debug 5 800 200 200 200 5 0 fifo
+	setarch -R ./codexion_debug 5 800 200 200 200 5 0 fifo
 
 clean:
 		@rm -rf $(OBJ_DIR)

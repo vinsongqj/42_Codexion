@@ -1,110 +1,98 @@
 #include "codexion.h"
 
-long long   get_priority(t_coder *coder)
+static int	get_higher_child(t_heap *heap, int i, int s)
 {
-    long long   priority;
+	int	left;
+	int	right;
 
-    if (coder->table->scheduler == 0)
-        return (get_time_in_ms());
-    pthread_mutex_lock(&coder->table->stop_lock);
-    priority = coder->last_compile + coder->table->time_to_burnout;
-    pthread_mutex_unlock(&coder->table->stop_lock);
-    return (priority);
+	left = 2 * i + 1;
+	right = 2 * i + 2;
+	if (left < heap->size && is_higher(heap->nodes[left], heap->nodes[s]))
+		s = left;
+	if (right < heap->size && is_higher(heap->nodes[right], heap->nodes[s]))
+		s = right;
+	return (s);
 }
 
-static void    swap_nodes(t_node *a, t_node *b)
+void	heap_push(t_heap *heap, int coder_id, long long priority)
 {
-    t_node temp;
+	int		i;
+	t_node	tmp;
 
-    temp = *a;
-    *a = *b;
-    *b = temp;
+	pthread_mutex_lock(&heap->lock);
+	i = heap->size++;
+	heap->nodes[i].coder_id = coder_id;
+	heap->nodes[i].priority = priority;
+	while (i > 0 && is_higher(heap->nodes[i], heap->nodes[(i - 1) / 2]))
+	{
+		tmp = heap->nodes[i];
+		heap->nodes[i] = heap->nodes[(i - 1) / 2];
+		heap->nodes[(i - 1) / 2] = tmp;
+		i = (i - 1) / 2;
+	}
+	pthread_mutex_unlock(&heap->lock);
 }
 
-static int is_higher_priority(t_node a, t_node b)
+void	heap_pop(t_heap *heap)
 {
-    if (a.priority < b.priority)
-        return (1);
-    if (a.priority == b.priority)
-        return (a.coder_id < b.coder_id);
-    return (0);
+	int		i;
+	int		s;
+	t_node	tmp;
+
+	pthread_mutex_lock(&heap->lock);
+	if (heap->size == 0)
+		return (pthread_mutex_unlock(&heap->lock), (void)0);
+	heap->nodes[0] = heap->nodes[--heap->size];
+	i = 0;
+	while (1)
+	{
+		s = get_higher_child(heap, i, i);
+		if (s == i)
+			break ;
+		tmp = heap->nodes[i];
+		heap->nodes[i] = heap->nodes[s];
+		heap->nodes[s] = tmp;
+		i = s;
+	}
+	pthread_mutex_unlock(&heap->lock);
 }
 
-void    heap_push(t_heap *heap, int coder_id, long long priority)
+int	is_coder_next(t_heap *heap, int coder_id)
 {
-    int i;
+	int	res;
 
-    pthread_mutex_lock(&heap->lock);
-    i = heap->size;
-    heap->nodes[i].coder_id = coder_id;
-    heap->nodes[i].priority = priority;
-    heap->size++;
-
-    while (i > 0 && is_higher_priority(heap->nodes[i], heap->nodes[(i - 1) / 2]))
-    {
-        swap_nodes(&heap->nodes[i], &heap->nodes[(i - 1) / 2]);
-        i = (i - 1) / 2;
-    }
-    
-    pthread_mutex_unlock(&heap->lock);
+	res = 0;
+	pthread_mutex_lock(&heap->lock);
+	if (heap->size > 0 && heap->nodes->coder_id == coder_id)
+		res = 1;
+	pthread_mutex_unlock(&heap->lock);
+	return (res);
 }
 
-void    heap_pop(t_heap *heap)
+void	heap_remove_coder(t_heap *heap, int coder_id)
 {
-    int i;
-    int smallest;
-    int left;
-    int right;
+	int		i;
+	int		s;
+	t_node	tmp;
 
-    pthread_mutex_lock(&heap->lock);
-    if (heap->size == 0)
-    {
-        pthread_mutex_unlock(&heap->lock);
-        return;
-    }
-    heap->nodes[0] = heap->nodes[heap->size - 1];
-    heap->size--;
-    if (heap->size == 0)
-    {
-        pthread_mutex_unlock(&heap->lock);
-        return;
-    }
-
-    i = 0;
-    while (1)
-    {
-        smallest = i;
-        left = 2 * i + 1;
-        right = 2 * i + 2;
-
-        if (left < heap->size && is_higher_priority(heap->nodes[left], heap->nodes[smallest]))
-            smallest = left;
-        if (right < heap->size && is_higher_priority(heap->nodes[right], heap->nodes[smallest]))
-            smallest = right;
-        if (smallest != i)
-        {
-            swap_nodes(&heap->nodes[i], &heap->nodes[smallest]);
-            i = smallest;
-        }
-        else
-            break;
-    }
-    pthread_mutex_unlock(&heap->lock);
-}
-
-int is_coder_next(t_heap *heap, int coder_id)
-{
-    pthread_mutex_lock(&heap->lock);
-    if (heap->size == 0)
-    {
-        pthread_mutex_unlock(&heap->lock);
-        return (0);
-    }
-    if (heap->nodes[0].coder_id == coder_id)
-    {
-        pthread_mutex_unlock(&heap->lock);
-        return (1);
-    }
-    pthread_mutex_unlock(&heap->lock);
-    return (0);
+	pthread_mutex_lock(&heap->lock);
+	i = -1;
+	while (++i < heap->size)
+		if (heap->nodes[i].coder_id == coder_id)
+			break ;
+	if (i < heap->size)
+	{
+		heap->nodes[i] = heap->nodes[--heap->size];
+		while (1)
+		{
+			s = get_higher_child(heap, i, i);
+			if (s == i)
+				break ;
+			tmp = heap->nodes[i];
+			heap->nodes[i] = heap->nodes[s];
+			heap->nodes[s] = tmp;
+			i = s;
+		}
+	}
+	pthread_mutex_unlock(&heap->lock);
 }
