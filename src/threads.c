@@ -15,7 +15,7 @@ static int	handle_burnout(t_table *t, int i)
 	return (1);
 }
 
-static int	check_death(t_table *t, int i)
+static int	check_burnout(t_table *t, int i)
 {
 	int			done;
 	long long	time_diff;
@@ -72,7 +72,7 @@ void	*monitor_routine(void *arg)
 		f_count = 0;
 		while (++i < t->number_of_coders)
 		{
-			if (check_death(t, i))
+			if (check_burnout(t, i))
 				f_count++;
 		}
 		if (should_stop_sim(t))

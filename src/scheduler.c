@@ -1,6 +1,6 @@
 #include "codexion.h"
 
-static int	get_higher_child(t_heap *heap, int i, int s)
+static int	get_higher_priority(t_heap *heap, int i, int s)
 {
 	int	left;
 	int	right;
@@ -46,7 +46,7 @@ void	heap_pop(t_heap *heap)
 	i = 0;
 	while (1)
 	{
-		s = get_higher_child(heap, i, i);
+		s = get_higher_priority(heap, i, i);
 		if (s == i)
 			break ;
 		tmp = heap->nodes[i];
@@ -85,7 +85,7 @@ void	heap_remove_coder(t_heap *heap, int coder_id)
 		heap->nodes[i] = heap->nodes[--heap->size];
 		while (1)
 		{
-			s = get_higher_child(heap, i, i);
+			s = get_higher_priority(heap, i, i);
 			if (s == i)
 				break ;
 			tmp = heap->nodes[i];

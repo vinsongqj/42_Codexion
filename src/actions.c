@@ -54,7 +54,7 @@ static int	grab_dongle(t_coder *coder, int d_id)
 	}
 }
 
-static int	acquire_resources(t_coder *coder, int f, int s)
+static int	try_grab_dongle(t_coder *coder, int f, int s)
 {
 	t_heap	*first_heap;
 
@@ -100,7 +100,7 @@ int	compile_action(t_coder *coder)
 		f = coder->right_dongle;
 		s = coder->left_dongle;
 	}
-	if (!acquire_resources(coder, f, s))
+	if (!try_grab_dongle(coder, f, s))
 		return (0);
 	execute_compile(coder, f, s);
 	return (1);
