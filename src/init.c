@@ -11,10 +11,18 @@ static int	parse_args(t_table *table, int argc, char **argv)
 	table->time_to_refactor = ft_atoll(argv[5]);
 	table->number_of_compiles_required = ft_atoll(argv[6]);
 	table->dongle_cooldown = ft_atoll(argv[7]);
-	if (!strcmp(argv[8], "priority"))
+	if (table->number_of_coders <= 0 || table->time_to_burnout <= 0
+		|| table->time_to_compile <= 0 || table->time_to_debug <= 0
+		|| table->time_to_refactor <= 0
+		|| table->number_of_compiles_required < 0
+		|| table->dongle_cooldown < 0)
+		return (1);
+	if (strcmp(argv[8], "edf") == 0)
 		table->scheduler = 1;
-	else
+	else if (strcmp(argv[8], "fifo") == 0)
 		table->scheduler = 0;
+	else
+		return (1);
 	return (0);
 }
 
@@ -47,7 +55,7 @@ static int	init_coders(t_table *table)
 	len = table->number_of_coders + 1;
 	while (++i < table->number_of_coders)
 	{
-		table->coders[i].id = i;
+		table->coders[i].id = i + 1;
 		table->coders[i].last_compile = get_time_in_ms();
 		table->coders[i].compiles_done = 0;
 		table->coders[i].left_dongle = i;
