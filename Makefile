@@ -24,8 +24,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
 			@$(CC) $(CFLAGS) -c $< -o $@
 
 debug:
-	$(CC) $(CFLAGS) -fsanitize=thread -g -Iinc src/*.c -lpthread -o codexion_debug
-	setarch -R ./codexion_debug 5 800 200 200 200 5 0 fifo
+	$(CC) $(CFLAGS) -O3 -fsanitize=thread -g -Iinc src/*.c -lpthread -o codexion
+	setarch -R ./codexion 5 800 200 200 200 5 0 fifo
 
 clean:
 		@rm -rf $(OBJ_DIR)

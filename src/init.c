@@ -3,7 +3,7 @@
 static int	parse_args(t_table *table, int argc, char **argv)
 {
 	if (argc != 9)
-		return (1);
+		return (fprintf(stderr, "Error: Less than 8 arguments\n"), 1);
 	table->number_of_coders = ft_atoll(argv[1]);
 	table->time_to_burnout = ft_atoll(argv[2]);
 	table->time_to_compile = ft_atoll(argv[3]);
@@ -16,13 +16,13 @@ static int	parse_args(t_table *table, int argc, char **argv)
 		|| table->time_to_refactor <= 0
 		|| table->number_of_compiles_required < 0
 		|| table->dongle_cooldown < 0)
-		return (1);
+		return (fprintf(stderr, "Error: Invalid parameter values\n"), 1);
 	if (strcmp(argv[8], "edf") == 0)
 		table->scheduler = 1;
 	else if (strcmp(argv[8], "fifo") == 0)
 		table->scheduler = 0;
 	else
-		return (1);
+		return (fprintf(stderr, "Error: 8th arg must be 'fifo' or 'edf'\n"), 1);
 	return (0);
 }
 
