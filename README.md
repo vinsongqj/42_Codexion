@@ -100,5 +100,10 @@ Example input:
 * [Core Dumped - Threads on Multicore Systems](https://youtu.be/5sw9XJokAqw?si=-5MvSP9_QHU_jFqN)
 
 * [Core Dumped - What Happens When A Program Calls Sleeps](https://youtu.be/e5g8eYKEhMw?si=ETsq_mChXmNInpQW)
+  
+* GBD (GNU Debugger)
+  
+* TSan (Thread Sanitizer)
+  
 ## Disclosure of AI Use
 Gemini was used to help with finding edge cases, error handling, optimization, structuring the readme and furthering my understanding about the topic.
