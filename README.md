@@ -101,7 +101,7 @@ Example input:
 
 * [Core Dumped - What Happens When A Program Calls Sleeps](https://youtu.be/e5g8eYKEhMw?si=ETsq_mChXmNInpQW)
   
-* GBD (GNU Debugger)
+* GDB (GNU Debugger)
   
 * TSan (Thread Sanitizer)
   
