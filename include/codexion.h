@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   codexion.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/25 14:41:37 by vgoh              #+#    #+#             */
+/*   Updated: 2026/05/25 14:44:32 by vgoh             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CODEXION_H
 # define CODEXION_H
 
@@ -66,7 +78,7 @@ int			compile_action(t_coder *coder);
 void		heap_push(t_heap *heap, int coder_id, long long priority);
 void		heap_pop(t_heap *heap);
 int			is_coder_next(t_heap *heap, int coder_id);
-void	    heap_remove_coder(t_heap *heap, int coder_id);
+void		heap_remove_coder(t_heap *heap, int coder_id);
 
 // init.c //
 int			init_table(t_table *table, int argc, char **argv);
@@ -76,13 +88,13 @@ long long	ft_atoll(const char *str);
 long long	get_time_in_ms(void);
 void		ft_usleep(long long time_in_ms, t_table *table);
 void		cleanup_table(t_table *table);
-int	        is_higher(t_node a, t_node b);
+int			is_higher(t_node a, t_node b);
 
 // utils_2.c //
 void		log_action(t_coder *coder, char *message);
 long long	get_priority(t_coder *coder);
 int			handle_single_coder(t_coder *coder, int f);
-int         should_stop_sim(t_table *t);
-int         handle_all_done_check(t_table *t, int f_count);
+int			should_stop_sim(t_table *t);
+int			handle_all_done_check(t_table *t, int f_count);
 
 #endif
