@@ -6,7 +6,7 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:41:37 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/26 03:27:54 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/05/26 03:51:44 by vgoh             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -70,9 +70,17 @@ typedef struct s_table
 // parser.c //
 int			parse_args(t_table *table, int argc, char **argv);
 
+// threads_utils.c //
+void		log_action(t_coder *coder, char *message);
+int			should_stop_sim(t_table *t);
+int			handle_all_done_check(t_table *t, int f_count);
+
 // threads.c //
 void		*coder_routine(void *arg);
 void		*monitor_routine(void *arg);
+
+// actions_utils.c //
+int			try_grab_dongle(t_coder *coder, int f, int s);
 
 // actions.c //
 int			compile_action(t_coder *coder);
@@ -92,12 +100,5 @@ long long	get_time_in_ms(void);
 void		ft_usleep(long long time_in_ms, t_table *table);
 void		cleanup_table(t_table *table);
 int			is_higher(t_node a, t_node b);
-
-// threads_utils.c //
-void		log_action(t_coder *coder, char *message);
-long long	get_priority(t_coder *coder);
-int			handle_single_coder(t_coder *coder, int f);
-int			should_stop_sim(t_table *t);
-int			handle_all_done_check(t_table *t, int f_count);
 
 #endif

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_2.c                                          :+:      :+:    :+:   */
+/*   threads_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:41:00 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/25 14:41:01 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/05/26 03:36:30 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "codexion.h"
 
@@ -23,36 +23,6 @@ void	log_action(t_coder *coder, char *message)
 		printf("%lld %d %s\n", ts, coder->id, message);
 	pthread_mutex_unlock(&coder->table->write_lock);
 	pthread_mutex_unlock(&coder->table->stop_lock);
-}
-
-long long	get_priority(t_coder *coder)
-{
-	long long	priority;
-
-	if (coder->table->scheduler == 0)
-		return (get_time_in_ms());
-	pthread_mutex_lock(&coder->table->stop_lock);
-	priority = coder->last_compile + coder->table->time_to_burnout;
-	pthread_mutex_unlock(&coder->table->stop_lock);
-	return (priority);
-}
-
-int	handle_single_coder(t_coder *coder, int f)
-{
-	while (1)
-	{
-		pthread_mutex_lock(&coder->table->stop_lock);
-		if (coder->table->stop_sim)
-		{
-			pthread_mutex_unlock(&coder->table->stop_lock);
-			break ;
-		}
-		pthread_mutex_unlock(&coder->table->stop_lock);
-		usleep(500);
-	}
-	pthread_mutex_unlock(&coder->table->dongle_locks[f]);
-	heap_pop(&coder->table->dongle_queues[f]);
-	return (0);
 }
 
 int	should_stop_sim(t_table *t)
