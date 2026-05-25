@@ -3,7 +3,7 @@
 static int	parse_args(t_table *table, int argc, char **argv)
 {
 	if (argc != 9)
-		return (fprintf(stderr, "Error: Less than 8 arguments\n"), 1);
+		return (fprintf(stderr, "Error: Must have 8 arguments\n"), 1);
 	table->number_of_coders = ft_atoll(argv[1]);
 	table->time_to_burnout = ft_atoll(argv[2]);
 	table->time_to_compile = ft_atoll(argv[3]);
