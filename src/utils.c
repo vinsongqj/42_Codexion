@@ -86,9 +86,7 @@ void	cleanup_table(t_table *t)
 
 int	is_higher(t_node a, t_node b)
 {
-	if (a.priority < b.priority)
-		return (1);
-	if (a.priority == b.priority)
-		return (a.coder_id < b.coder_id);
-	return (0);
+	if (a.priority != b.priority)
+		return (a.priority < b.priority);
+	return (a.coder_id < b.coder_id);
 }
