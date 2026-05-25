@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
@@ -6,37 +6,11 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:40:11 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/25 14:40:12 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/05/26 00:59:22 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "codexion.h"
-
-static int	parse_args(t_table *table, int argc, char **argv)
-{
-	if (argc != 9)
-		return (fprintf(stderr, "Error: Must have 8 arguments\n"), 1);
-	table->number_of_coders = ft_atoll(argv[1]);
-	table->time_to_burnout = ft_atoll(argv[2]);
-	table->time_to_compile = ft_atoll(argv[3]);
-	table->time_to_debug = ft_atoll(argv[4]);
-	table->time_to_refactor = ft_atoll(argv[5]);
-	table->number_of_compiles_required = ft_atoll(argv[6]);
-	table->dongle_cooldown = ft_atoll(argv[7]);
-	if (table->number_of_coders <= 0 || table->time_to_burnout <= 0
-		|| table->time_to_compile <= 0 || table->time_to_debug <= 0
-		|| table->time_to_refactor <= 0
-		|| table->number_of_compiles_required < 0
-		|| table->dongle_cooldown < 0)
-		return (fprintf(stderr, "Error: Invalid parameter values\n"), 1);
-	if (strcmp(argv[8], "edf") == 0)
-		table->scheduler = 1;
-	else if (strcmp(argv[8], "fifo") == 0)
-		table->scheduler = 0;
-	else
-		return (fprintf(stderr, "Error: 8th arg must be 'fifo' or 'edf'\n"), 1);
-	return (0);
-}
 
 static int	alloc_tables(t_table *table)
 {

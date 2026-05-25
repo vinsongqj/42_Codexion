@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:41:37 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/25 14:44:32 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/05/26 03:27:54 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CODEXION_H
 # define CODEXION_H
@@ -49,12 +49,12 @@ typedef struct s_coder
 typedef struct s_table
 {
 	int				number_of_coders;
-	long long		time_to_burnout;
-	long long		time_to_compile;
-	long long		time_to_debug;
-	long long		time_to_refactor;
+	int				time_to_burnout;
+	int				time_to_compile;
+	int				time_to_debug;
+	int				time_to_refactor;
 	int				number_of_compiles_required;
-	long long		dongle_cooldown;
+	int				dongle_cooldown;
 	int				scheduler;
 	int				stop_sim;
 	int				all_finished;
@@ -66,6 +66,9 @@ typedef struct s_table
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	*dongle_locks;
 }	t_table;
+
+// parser.c //
+int			parse_args(t_table *table, int argc, char **argv);
 
 // threads.c //
 void		*coder_routine(void *arg);
@@ -90,7 +93,7 @@ void		ft_usleep(long long time_in_ms, t_table *table);
 void		cleanup_table(t_table *table);
 int			is_higher(t_node a, t_node b);
 
-// utils_2.c //
+// threads_utils.c //
 void		log_action(t_coder *coder, char *message);
 long long	get_priority(t_coder *coder);
 int			handle_single_coder(t_coder *coder, int f);

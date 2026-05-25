@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread -Iinclude
 SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = include
-SRCS_FILES = main.c actions.c scheduler.c threads.c utils.c utils_2.c init.c
+SRCS_FILES = main.c parser.c actions.c scheduler.c threads.c threads_utils.c utils.c init.c
 SRCS = $(addprefix $(SRC_DIR)/, $(SRCS_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS_FILES:.c=.o))
 HEADER = $(INC_DIR)/codexion.h 
