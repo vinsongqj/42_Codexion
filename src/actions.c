@@ -6,7 +6,7 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:39:59 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/26 03:39:17 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/16 17:53:34 by vgoh             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,10 +14,12 @@
 
 static void	execute_compile(t_coder *coder, int f, int s)
 {
+	pthread_mutex_lock(&coder->table->stop_lock);
+	coder->last_compile = get_time_in_ms();
+	pthread_mutex_unlock(&coder->table->stop_lock);
 	log_action(coder, "is compiling");
 	ft_usleep(coder->table->time_to_compile, coder->table);
 	pthread_mutex_lock(&coder->table->stop_lock);
-	coder->last_compile = get_time_in_ms();
 	coder->compiles_done++;
 	coder->table->dongle_last[f] = get_time_in_ms();
 	coder->table->dongle_last[s] = get_time_in_ms();

@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:40:47 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/25 14:40:48 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/16 17:54:59 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "codexion.h"
 
@@ -35,7 +35,7 @@ static int	check_burnout(t_table *t, int i)
 	int			m_reach;
 
 	pthread_mutex_lock(&t->stop_lock);
-	l_act = (t->number_of_compiles_required != -1);
+	l_act = (t->number_of_compiles_required != 0);
 	m_reach = (t->coders[i].compiles_done >= t->number_of_compiles_required);
 	done = (l_act && m_reach);
 	time_diff = get_time_in_ms() - t->coders[i].last_compile;
@@ -58,7 +58,7 @@ static int	check_limit_reached(t_coder *c, t_table *t)
 	int	m_reach;
 
 	pthread_mutex_lock(&t->stop_lock);
-	l_act = (t->number_of_compiles_required != -1);
+	l_act = (t->number_of_compiles_required != 0);
 	m_reach = (c->compiles_done >= t->number_of_compiles_required);
 	if (l_act && m_reach)
 	{

@@ -6,7 +6,7 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 14:41:00 by vgoh              #+#    #+#             */
-/*   Updated: 2026/05/26 01:33:31 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/16 17:43:32 by vgoh             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,11 +43,8 @@ static int	ft_is_valid_int(const char *str, int *out)
 
 static int	parse_values(t_table *t, char **argv)
 {
-	int			i;
-	int			*targets[7];
-	const char	*names[] = {"number_of_coders", "time_to_burnout",
-		"time_to_compile", "time_to_debug", "time_to_refactor",
-		"number_of_compiles_required", "dongle_cooldown"};
+	int	*targets[7];
+	int	i;
 
 	targets[0] = &t->number_of_coders;
 	targets[1] = &t->time_to_burnout;
@@ -60,11 +57,7 @@ static int	parse_values(t_table *t, char **argv)
 	while (i < 7)
 	{
 		if (!ft_is_valid_int(argv[i + 1], targets[i]))
-		{
-			fprintf(stderr, "Error: Arg '%s' ('%s') is invalid\n",
-				names[i], argv[i + 1]);
-			return (1);
-		}
+			return (fprintf(stderr, "Error: Invalid argument %d\n", i + 1), 1);
 		i++;
 	}
 	return (0);
