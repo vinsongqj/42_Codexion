@@ -12,23 +12,30 @@
 
 #include "codexion.h"
 
+static void	free_allocs(t_table *table)
+{
+	free(table->coders);
+	free(table->dongle_locks);
+	free(table->dongle_last);
+	free(table->dongle_queues);
+	table->coders = NULL;
+	table->dongle_locks = NULL;
+	table->dongle_last = NULL;
+	table->dongle_queues = NULL;
+}
+
 static int	alloc_tables(t_table *table)
 {
 	size_t	len;
 
 	len = table->number_of_coders;
 	table->coders = malloc(sizeof(t_coder) * len);
-	if (!table->coders)
-		return (1);
 	table->dongle_locks = malloc(sizeof(pthread_mutex_t) * len);
-	if (!table->dongle_locks)
-		return (1);
 	table->dongle_last = malloc(sizeof(long long) * len);
-	if (!table->dongle_last)
-		return (1);
 	table->dongle_queues = malloc(sizeof(t_heap) * len);
-	if (!table->dongle_queues)
-		return (1);
+	if (!table->coders || !table->dongle_locks || !table->dongle_last
+		|| !table->dongle_queues)
+		return (free_allocs(table), 1);
 	return (0);
 }
 

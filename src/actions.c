@@ -12,6 +12,26 @@
 
 #include "codexion.h"
 
+int	try_grab_dongle(t_coder *coder, int f, int s)
+{
+	t_heap	*first_heap;
+
+	if (!grab_dongle(coder, f))
+		return (0);
+	log_action(coder, "has taken a dongle");
+	if (coder->table->number_of_coders == 1)
+		return (handle_single_coder(coder, f));
+	if (!grab_dongle(coder, s))
+	{
+		first_heap = &coder->table->dongle_queues[f];
+		heap_remove_coder(first_heap, coder->id);
+		pthread_mutex_unlock(&coder->table->dongle_locks[f]);
+		return (0);
+	}
+	log_action(coder, "has taken a dongle");
+	return (1);
+}
+
 static void	execute_compile(t_coder *coder, int f, int s)
 {
 	pthread_mutex_lock(&coder->table->stop_lock);

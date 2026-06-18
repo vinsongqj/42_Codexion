@@ -80,7 +80,8 @@ void		*coder_routine(void *arg);
 void		*monitor_routine(void *arg);
 
 // actions_utils.c //
-int			try_grab_dongle(t_coder *coder, int f, int s);
+int			grab_dongle(t_coder *coder, int d_id);
+int			handle_single_coder(t_coder *coder, int f);
 
 // actions.c //
 int			compile_action(t_coder *coder);
