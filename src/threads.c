@@ -6,7 +6,7 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 18:08:12 by vgoh              #+#    #+#             */
-/*   Updated: 2026/06/19 01:27:19 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/19 02:14:19 by vgoh             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -60,7 +60,6 @@ static int	check_burnout(t_table *t, int i)
 	}
 	return (is_burned_out(t, i));
 }
-
 
 void	*monitor_routine(void *arg)
 {
