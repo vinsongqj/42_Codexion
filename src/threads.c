@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 18:08:12 by vgoh              #+#    #+#             */
-/*   Updated: 2026/06/18 18:08:15 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/19 01:27:19 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "codexion.h"
 
@@ -27,19 +27,12 @@ static int	handle_burnout(t_table *t, int i)
 	return (1);
 }
 
-static int	check_burnout(t_table *t, int i)
+static int	is_burned_out(t_table *t, int i)
 {
-	int			done;
 	long long	time_diff;
-	int			l_act;
-	int			m_reach;
 
-	pthread_mutex_lock(&t->stop_lock);
-	l_act = (t->number_of_compiles_required != 0);
-	m_reach = (t->coders[i].compiles_done >= t->number_of_compiles_required);
-	done = (l_act && m_reach);
 	time_diff = get_time_in_ms() - t->coders[i].last_compile;
-	if (!done && (time_diff >= t->time_to_burnout))
+	if (time_diff >= t->time_to_burnout)
 	{
 		if (t->stop_sim)
 		{
@@ -49,25 +42,25 @@ static int	check_burnout(t_table *t, int i)
 		return (handle_burnout(t, i));
 	}
 	pthread_mutex_unlock(&t->stop_lock);
-	return (done);
+	return (0);
 }
 
-static int	check_limit_reached(t_coder *c, t_table *t)
+static int	check_burnout(t_table *t, int i)
 {
 	int	l_act;
 	int	m_reach;
 
 	pthread_mutex_lock(&t->stop_lock);
 	l_act = (t->number_of_compiles_required != 0);
-	m_reach = (c->compiles_done >= t->number_of_compiles_required);
+	m_reach = (t->coders[i].compiles_done >= t->number_of_compiles_required);
 	if (l_act && m_reach)
 	{
 		pthread_mutex_unlock(&t->stop_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&t->stop_lock);
-	return (0);
+	return (is_burned_out(t, i));
 }
+
 
 void	*monitor_routine(void *arg)
 {

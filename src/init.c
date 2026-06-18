@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 18:05:37 by vgoh              #+#    #+#             */
-/*   Updated: 2026/06/18 18:05:41 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/19 01:03:53 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "codexion.h"
 
@@ -39,6 +39,13 @@ static int	alloc_tables(t_table *table)
 	return (0);
 }
 
+static long long	get_init_compile_time(t_table *table, int i)
+{
+	if ((i + 1) % 2 == 0)
+		return (get_time_in_ms() + (table->time_to_compile / 2));
+	return (get_time_in_ms());
+}
+
 static int	init_coders(t_table *table)
 {
 	int		i;
@@ -49,7 +56,7 @@ static int	init_coders(t_table *table)
 	while (++i < table->number_of_coders)
 	{
 		table->coders[i].id = i + 1;
-		table->coders[i].last_compile = get_time_in_ms();
+		table->coders[i].last_compile = get_init_compile_time(table, i);
 		table->coders[i].compiles_done = 0;
 		table->coders[i].left_dongle = i;
 		table->coders[i].right_dongle = (i + 1) % table->number_of_coders;

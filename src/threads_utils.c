@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   threads_utils.c                                    :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 18:08:35 by vgoh              #+#    #+#             */
-/*   Updated: 2026/06/18 18:08:39 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/19 01:23:20 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "codexion.h"
 
@@ -52,5 +52,22 @@ int	handle_all_done_check(t_table *t, int f_count)
 		pthread_mutex_unlock(&t->stop_lock);
 		return (1);
 	}
+	return (0);
+}
+
+int	check_limit_reached(t_coder *c, t_table *t)
+{
+	int	l_act;
+	int	m_reach;
+
+	pthread_mutex_lock(&t->stop_lock);
+	l_act = (t->number_of_compiles_required != 0);
+	m_reach = (c->compiles_done >= t->number_of_compiles_required);
+	if (l_act && m_reach)
+	{
+		pthread_mutex_unlock(&t->stop_lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&t->stop_lock);
 	return (0);
 }

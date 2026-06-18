@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: vgoh <vgoh@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 18:11:30 by vgoh              #+#    #+#             */
-/*   Updated: 2026/06/18 18:11:34 by vgoh             ###   ########.fr       */
+/*   Updated: 2026/06/19 01:23:42 by vgoh             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CODEXION_H
 # define CODEXION_H
@@ -74,6 +74,7 @@ int			parse_args(t_table *table, int argc, char **argv);
 void		log_action(t_coder *coder, char *message);
 int			should_stop_sim(t_table *t);
 int			handle_all_done_check(t_table *t, int f_count);
+int			check_limit_reached(t_coder *c, t_table *t);
 
 // threads.c //
 void		*coder_routine(void *arg);
