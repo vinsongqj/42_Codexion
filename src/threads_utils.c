@@ -39,12 +39,12 @@ int	should_stop_sim(t_table *t)
 
 int	handle_all_done_check(t_table *t, int f_count)
 {
-	int	l_act;
+	int	has_limit;
 	int	all_done;
 
-	l_act = (t->number_of_compiles_required != 0);
+	has_limit = (t->number_of_compiles_required != 0);
 	all_done = (f_count == t->number_of_coders);
-	if (l_act && all_done)
+	if (has_limit && all_done)
 	{
 		pthread_mutex_lock(&t->stop_lock);
 		t->all_finished = 1;
@@ -57,13 +57,13 @@ int	handle_all_done_check(t_table *t, int f_count)
 
 int	check_limit_reached(t_coder *c, t_table *t)
 {
-	int	l_act;
-	int	m_reach;
+	int	has_limit;
+	int	limit_reached;
 
 	pthread_mutex_lock(&t->stop_lock);
-	l_act = (t->number_of_compiles_required != 0);
-	m_reach = (c->compiles_done >= t->number_of_compiles_required);
-	if (l_act && m_reach)
+	has_limit = (t->number_of_compiles_required != 0);
+	limit_reached = (c->compiles_done >= t->number_of_compiles_required);
+	if (has_limit && limit_reached)
 	{
 		pthread_mutex_unlock(&t->stop_lock);
 		return (1);
