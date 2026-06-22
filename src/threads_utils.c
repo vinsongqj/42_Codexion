@@ -37,13 +37,13 @@ int	should_stop_sim(t_table *t)
 	return (0);
 }
 
-int	handle_all_done_check(t_table *t, int f_count)
+int	handle_all_done_check(t_table *t, int coders_done)
 {
 	int	has_limit;
 	int	all_done;
 
 	has_limit = (t->number_of_compiles_required != 0);
-	all_done = (f_count == t->number_of_coders);
+	all_done = (coders_done == t->number_of_coders);
 	if (has_limit && all_done)
 	{
 		pthread_mutex_lock(&t->stop_lock);
@@ -70,4 +70,19 @@ int	check_limit_reached(t_coder *c, t_table *t)
 	}
 	pthread_mutex_unlock(&t->stop_lock);
 	return (0);
+}
+
+void	wait_for_start(t_table *t)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&t->stop_lock);
+		if (t->start_time != 0)
+		{
+			pthread_mutex_unlock(&t->stop_lock);
+			return ;
+		}
+		pthread_mutex_unlock(&t->stop_lock);
+		usleep(100);
+	}
 }

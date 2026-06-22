@@ -47,13 +47,13 @@ static int	is_burned_out(t_table *t, int i)
 
 static int	check_burnout(t_table *t, int i)
 {
-	int	l_act;
-	int	m_reach;
+	int	has_limit;
+	int	hit_limit;
 
 	pthread_mutex_lock(&t->stop_lock);
-	l_act = (t->number_of_compiles_required != 0);
-	m_reach = (t->coders[i].compiles_done >= t->number_of_compiles_required);
-	if (l_act && m_reach)
+	has_limit = (t->number_of_compiles_required != 0);
+	hit_limit = (t->coders[i].compiles_done >= t->number_of_compiles_required);
+	if (has_limit && hit_limit)
 	{
 		pthread_mutex_unlock(&t->stop_lock);
 		return (1);
@@ -65,7 +65,7 @@ void	*monitor_routine(void *arg)
 {
 	t_table	*t;
 	int		i;
-	int		f_count;
+	int		coders_done;
 
 	t = (t_table *)arg;
 	while (1)
@@ -73,15 +73,15 @@ void	*monitor_routine(void *arg)
 		if (should_stop_sim(t))
 			return (NULL);
 		i = -1;
-		f_count = 0;
+		coders_done = 0;
 		while (++i < t->number_of_coders)
 		{
 			if (check_burnout(t, i))
-				f_count++;
+				coders_done++;
 		}
 		if (should_stop_sim(t))
 			return (NULL);
-		if (handle_all_done_check(t, f_count))
+		if (handle_all_done_check(t, coders_done))
 			return (NULL);
 		usleep(1000);
 	}
@@ -94,6 +94,7 @@ void	*coder_routine(void *arg)
 
 	c = (t_coder *)arg;
 	t = c->table;
+	wait_for_start(t);
 	if (c->id % 2 == 0)
 		ft_usleep(t->time_to_compile / 2, t);
 	while (1)

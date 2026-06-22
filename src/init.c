@@ -84,6 +84,6 @@ int	init_table(t_table *table, int argc, char **argv)
 		return (1);
 	pthread_mutex_init(&table->stop_lock, NULL);
 	pthread_mutex_init(&table->write_lock, NULL);
-	table->start_time = get_time_in_ms();
+	table->start_time = 0;
 	return (0);
 }

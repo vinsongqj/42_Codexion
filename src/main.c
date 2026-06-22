@@ -12,6 +12,13 @@
 
 #include "codexion.h"
 
+static void	start_simulation(t_table *t)
+{
+	pthread_mutex_lock(&t->stop_lock);
+	t->start_time = get_time_in_ms();
+	pthread_mutex_unlock(&t->stop_lock);
+}
+
 static void	join_and_cleanup(t_table *table, pthread_t monitor)
 {
 	int	i;
@@ -47,6 +54,7 @@ int	main(int argc, char **argv)
 		cleanup_table(&table);
 		return (1);
 	}
+	start_simulation(&table);
 	join_and_cleanup(&table, monitor);
 	return (0);
 }

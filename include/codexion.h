@@ -75,6 +75,7 @@ void		log_action(t_coder *coder, char *message);
 int			should_stop_sim(t_table *t);
 int			handle_all_done_check(t_table *t, int f_count);
 int			check_limit_reached(t_coder *c, t_table *t);
+void		wait_for_start(t_table *t);
 
 // threads.c //
 void		*coder_routine(void *arg);
