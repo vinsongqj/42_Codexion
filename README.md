@@ -100,6 +100,10 @@ Example input:
 * [Core Dumped - Threads on Multicore Systems](https://youtu.be/5sw9XJokAqw?si=-5MvSP9_QHU_jFqN)
 
 * [Core Dumped - What Happens When A Program Calls Sleeps](https://youtu.be/e5g8eYKEhMw?si=ETsq_mChXmNInpQW)
+
+* [Chris Kanich - Everything you should know about deadlock in three minutes or less](https://youtu.be/oEbXlSH8hyE?si=481ERYq34hHqmH1m)
+
+* [Michael Sambol - Heaps in 3 minutes - Intro](https://youtu.be/0wPlzMU-k00?si=8st45ADz0pa82H9_)
   
 * GDB (GNU Debugger)
   
